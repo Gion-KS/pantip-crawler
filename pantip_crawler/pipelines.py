@@ -12,10 +12,9 @@ class CSVWriterPipeline(object):
     def __init__(self):
         self.file = codecs.open('result1.csv', 'wb', encoding='utf-8')
         self.writer = UnicodeWriter(self.file)
-
+        self.writer.writerow(['Cagetory', 'Recommended', 'Title', 'Author', 'URL', 'Comment Count', 'Anon Comment Count', 'Subcomment Count', 'Anon Subcomment Count'])
     def process_item(self, item, spider):
-        row = [item["category"], "true" if item["recommended"] else "false", item["title"], item["author"], str(item["comment_count"]), str(item["anon_comment_count"]), str(item["subcomment_count"]), str(item["anon_subcomment_count"])]
-        row = [unicode(s) for s in row]
+        row = [item["category"], "true" if item["recommended"] else "false", item["title"], item["author"], item['url'], str(item["comment_count"]), str(item["anon_comment_count"]), str(item["subcomment_count"]), str(item["anon_subcomment_count"])]
         self.writer.writerow(row)
 
     def spider_closed(self, spider):
