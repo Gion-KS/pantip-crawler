@@ -1,37 +1,24 @@
 # This Python file uses the following encoding: utf-8
 import scrapy
-from scrapy.contrib.spiders import CrawlSpider, Rule
-from scrapy.contrib.linkextractors import LinkExtractor
-from scrapy.selector import Selector
-from scrapy.http import HtmlResponse
+from scrapy.contrib.spiders import CrawlSpider
 from pantip_crawler.items import PantipCrawlerItem
 import json
 
 class PantipSpider(CrawlSpider):
 
     name = 'pantip'
-    start_urls = ['http://pantip.com/forum/supachalasai'] #siam, chalermthai, family
+    start_urls = ['http://pantip.com/forum/silom'] #siam, chalermthai, family
 
     def parse(self, response):
-        #filename = response.url.split("/")[-2]
-        # with open(filename, 'wb') as f:
-        #     f.write(response.body)
         print type(response.body)
         rec_posts_url = response.css('.post-item.best-item .post-item-title a::attr(href)').extract()
         rec_posts_url = ["%s%s" % ("http://pantip.com", url) for url in rec_posts_url]
         latest_posts_url = response.css(".post-list-wrapper .post-item .post-item-title a::attr(href)").extract()
         latest_posts_url = ["%s%s" % ("http://pantip.com", url) for url in latest_posts_url]
-        for url in rec_posts_url:
+        for url in rec_posts_url + latest_posts_url:
             item = PantipCrawlerItem()
             item['category'] = response.url.split("/")[-1]
-            item['recommended'] = True
-            request = scrapy.Request(url, callback=self.parse_thread)
-            request.meta['item'] = item
-            yield request
-        for url in latest_posts_url:
-            item = PantipCrawlerItem()
-            item['category'] = response.url.split("/")[-1]
-            item['recommended'] = False
+            item['recommended'] = True if url in rec_posts_url else False
             request = scrapy.Request(url, callback=self.parse_thread)
             request.meta['item'] = item
             yield request

@@ -30,6 +30,8 @@ class UnicodeWriter:
         self.writer = csv.writer(self.queue, dialect=dialect, **kwds)
         self.stream = f
         self.encoder = codecs.getincrementalencoder(encoding)()
+        self.stream.write(u'\uFEFF') #BOM
+
     def writerow(self, row):
         '''writerow(unicode) -> None
         This function takes a Unicode string and encodes it to the output.
@@ -37,7 +39,7 @@ class UnicodeWriter:
         self.writer.writerow([s.encode("utf-8") for s in row])
         data = self.queue.getvalue()
         data = data.decode("utf-8")
-        data = self.encoder.encode(data)
+        # data = self.encoder.encode(data)
         self.stream.write(data)
         self.queue.truncate(0)
 

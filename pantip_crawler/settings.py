@@ -16,4 +16,4 @@ NEWSPIDER_MODULE = 'pantip_crawler.spiders'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'pantip_crawler (+http://www.yourdomain.com)'
 
-#ITEM_PIPELINES = {'pantip_crawler.pipelines.CSVWriterPipeline': 1}
+ITEM_PIPELINES = {'pantip_crawler.pipelines.CSVWriterPipeline': 1}

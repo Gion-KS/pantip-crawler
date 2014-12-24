@@ -5,18 +5,12 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
-
-# class PantipCrawlerPipeline(object):
-#     def process_item(self, item, spider):
-#         return item
 import codecs
-import os
 from csv_helper import UnicodeWriter
 class CSVWriterPipeline(object):
 
     def __init__(self):
-        print "hello!"
-        self.file = codecs.open('result.csv', 'wb', encoding='utf-8')
+        self.file = codecs.open('result1.csv', 'wb', encoding='utf-8')
         self.writer = UnicodeWriter(self.file)
 
     def process_item(self, item, spider):
